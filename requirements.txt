@@ -29,5 +29,5 @@ scikit-learn
 langgraph
 streamlit
 
-pytorch
+torch
 pydantic
