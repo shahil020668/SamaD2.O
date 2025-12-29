@@ -10,6 +10,8 @@ CONFIG = {"configurable": {"thread_id": "chat-1"}}
 if 'messages_history' not in st.session_state:
     st.session_state['messages_history'] = []
 
+st.title("💬 SamaD2.O")
+
 
 for message in st.session_state['messages_history']:
     if isinstance(message, HumanMessage):
