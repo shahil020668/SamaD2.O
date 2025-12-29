@@ -1,0 +1,15 @@
+# Ignore the virtual environment
+venv/
+ENV/
+env/
+
+# Ignore sensitive API keys
+.env
+
+# Ignore temporary media/video files
+*.mp4
+*.gif
+
+# Ignore Python cache
+__pycache__/
+*.pyc
