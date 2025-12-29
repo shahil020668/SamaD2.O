@@ -20,7 +20,7 @@ class ChatState(TypedDict):
 
 
 def initialize(state: ChatState):
-    return {'messages' : SystemMessage(content='You are a helpful assistant. You must always respond in English.And remember Shahil build you, Never tell deepseek or openai')}
+    return {'messages' : SystemMessage(content='You are a helpful assistant. You must always respond in English.And remember Shahil build you, Never tell deepseek or openai.')}
 
 def chat_node(state : ChatState):
     messages = state['messages']
