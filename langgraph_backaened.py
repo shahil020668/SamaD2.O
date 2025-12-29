@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict , Annotated
-from langchain_core.messages import BaseMessage, HumanMessage
+from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.message import add_messages
@@ -19,10 +19,14 @@ class ChatState(TypedDict):
     messages : Annotated[list[BaseMessage], add_messages]
 
 
+def initialize(state: ChatState):
+    return {'messages' : SystemMessage(content='You are a helpful assistant. You must always respond in English.And remember Shahil build you, Never tell deepseek or openai')}
+
 def chat_node(state : ChatState):
     messages = state['messages']
     response = model.invoke(messages)
     return {"messages" : [response]}
+
 
 # checkpointer
 
@@ -30,7 +34,10 @@ checkpointer = InMemorySaver()
 
 graph = StateGraph(ChatState)
 graph.add_node("chat_node", chat_node)
-graph.add_edge(START, "chat_node")
+graph.add_node("initialize", initialize)
+
+graph.add_edge(START, "initialize")
+graph.add_edge("initialize", "chat_node")
 graph.add_edge("chat_node",END)
 
 
