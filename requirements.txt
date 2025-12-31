@@ -31,3 +31,5 @@ streamlit
 
 torch
 pydantic
+
+langgraph-checkpoint-sqlite
