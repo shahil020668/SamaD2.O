@@ -7,8 +7,23 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph.message import add_messages
 from dotenv import load_dotenv
 import sqlite3
+import streamlit as st
+import os
 
-conn = sqlite3.connect(database='chatbot.db', check_same_thread=False)
+if "user" not in st.session_state:
+    st.stop()
+
+user_id = st.session_state.user["uid"]
+
+DB_DIR = "user_dbs"
+os.makedirs(DB_DIR, exist_ok=True)
+
+db_path = os.path.join(DB_DIR, f"{user_id}.db")
+
+def get_connection(path):
+    return sqlite3.connect(path, check_same_thread=False)
+
+conn = get_connection(db_path)
 
 load_dotenv()
 

@@ -2,7 +2,31 @@ import streamlit as st
 from backened_database import chatbot, fetch_all_thread
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 import uuid
+import cookies
 import time
+from streamlit_cookies_manager.cookie_manager import CookiesNotReady
+
+token = None
+try:
+    token = cookies.get("token")
+except CookiesNotReady:
+    pass
+
+if not st.session_state.get("logged_in") or not token:
+    st.switch_page("app.py")
+
+# 🔓 LOGOUT
+if st.button("Logout"):
+    try:
+        del cookies["token"]
+        cookies.save()
+    except CookiesNotReady:
+        pass
+
+    st.session_state.clear()
+    st.switch_page("app.py")
+
+
 
 def generate_threadid() -> str:
     threadid = uuid.uuid4()
@@ -103,4 +127,5 @@ if user_input:
     with st.chat_message('assistant'):
         ai_message = stream_ai_response(chatbot, user_input, CONFIG)
     st.session_state['messages_history'].append(ai_message)
+
 
